@@ -18,14 +18,11 @@
         <div class="row">
             <div class="col-md-6 col-sm-12">
                 <h4>Cli Bluff Game</h4>
-                <label for="">Commad</label> <br>
+                <label for="">Command</label> <br>
                 <input type="text" name="command"> <br>
                 <label for="">Parameters</label> <br>
                 <input type="text" name="params"> <br>
-                <label for="">Message</label> <br>
-                <input type="text" name="message"> <br>
                 <button class="mt-2" type="submit" onclick="submit()">submit</button> <br>
-                <p class="mt-2">Note: Message field will work only if you are in a game and its your turn!</p>
             </div>
             <div class="col-md-6 col-sm-12 right-section">
                 <h4>Positions</h4>
@@ -61,6 +58,9 @@
                 <div class="result4">
 
                 </div>
+                <div class="rule-section">
+
+                </div>
             </div>
             <div class="col-md-6 col-sm-12 right-section">
                 <h4 class="mt-3">Response</h4>
@@ -79,6 +79,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <!-- Custom -->
     <script>
+        // Main Game Modules Get and Set
         const submit = () => {
             let command = $("input[name='command']").val();
             let params = $("input[name='params']").val();
@@ -100,6 +101,7 @@
             });
         }
 
+        // Get Game State
         setInterval(() => {
             var request = $.ajax({
                 url: "gameState.php",
@@ -116,6 +118,7 @@
             });
         }, 1000);
 
+        // Get User Cards
         setInterval(() => {
             var request = $.ajax({
                 url: "card.php",
@@ -132,6 +135,7 @@
             });
         }, 1000);
 
+        // Get User Turn
         setInterval(() => {
             var request = $.ajax({
                 url: "turn.php",
@@ -148,6 +152,7 @@
             });
         }, 1000);
 
+        // Get Placed Cards
         setInterval(() => {
             var request = $.ajax({
                 url: "placedCards.php",
@@ -164,6 +169,7 @@
             });
         }, 1000);
 
+        // Get Positions
         setInterval(() => {
             var request = $.ajax({
                 url: "position.php",
@@ -173,6 +179,23 @@
 
             request.done(function(response) {
                 $("#position-section").html(response);
+            });
+
+            request.fail(function(jqXHR, textStatus) {
+                console.log("Request failed: " + textStatus);
+            });
+        }, 1000);
+
+        // Get Game Rule
+        setInterval(() => {
+            var request = $.ajax({
+                url: "rule.php",
+                type: "GET",
+                //dataType: "json"
+            });
+
+            request.done(function(response) {
+                $(".rule-section:eq(0)").html(response);
             });
 
             request.fail(function(jqXHR, textStatus) {
